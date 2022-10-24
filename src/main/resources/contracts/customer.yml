@@ -1,0 +1,55 @@
+openapi: "3.0.0"
+info:
+  version: "1.0.0"
+  title: "Customer care application"
+paths:
+  /customer-care/customer:
+    post:
+      tags:
+        - Private
+      summary: "Inserisce nuovo customer"
+      operationId: "inserisciCustomer"
+      parameters:
+        - name: "input"
+          in: query
+          description: "input dto per inserire customer"
+          required: true
+          schema:
+            $ref: "#/components/schemas/InserimentoCustomerRequest"
+      responses:
+        '200':
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InserimentoCustomerResponse'
+        '404':
+          description: "Data not found"
+        '500':
+          description: "Internal error"
+
+components:
+  schemas:
+    InserimentoCustomerRequest:
+      type: object
+      required:
+        - nome
+        - cognome
+        - codiceFiscale
+        - indirizzo
+      properties:
+        nome:
+          type: string
+        cognome:
+          type: string
+        codiceFiscale:
+          type: string
+        indirizzo:
+          type: string
+    InserimentoCustomerResponse:
+      type: object
+      required:
+        - success
+      properties:
+        success:
+          type: boolean
