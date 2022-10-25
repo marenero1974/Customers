@@ -89,13 +89,12 @@
         </dependency>
 
 
-<!-- usata solo per permettere la compliazione con profilo generate-controller attivo
+ <!--usata solo per permettere la compliazione con profilo generate-controller attivo-->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
         </dependency>
--->
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>

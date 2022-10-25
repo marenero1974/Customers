@@ -46,6 +46,12 @@ components:
           type: string
         indirizzo:
           type: string
+        devices:
+          type: "array"
+          items:
+            $ref: '#/components/schemas/DeviceDTO'
+            #type: string
+            #format: uuid
     InserimentoCustomerResponse:
       type: object
       required:
@@ -53,3 +59,12 @@ components:
       properties:
         success:
           type: boolean
+        message:
+          type: string
+    DeviceDTO:
+      type: object
+      properties:
+        stato:
+          type: string
+        uuid:
+          type: string

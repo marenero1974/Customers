@@ -1,5 +1,6 @@
 package it.customers.h2db.springboot.models;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,6 +19,14 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name = "device")
 public class Device {
 
+  public Device() {}
+
+  public Device(UUID uuid, String stato, Customer customer) {
+    this.uuid = uuid;
+    this.stato = stato;
+    this.customer = customer;
+  }
+
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "device_GEN")
   @SequenceGenerator(name = "device_GEN", sequenceName = "device_SEQ")
@@ -28,10 +37,11 @@ public class Device {
 
   private String stato;
 
-  @ManyToOne
+  @ManyToOne(cascade= CascadeType.ALL)
   @JoinColumn(name = "customer_id")
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Customer customer;
+
 
   public Customer getCustomer() {
     return customer;

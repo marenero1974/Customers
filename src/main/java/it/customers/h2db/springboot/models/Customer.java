@@ -1,5 +1,6 @@
 package it.customers.h2db.springboot.models;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,7 +26,7 @@ public class Customer {
     private String codiceFiscale;
     private String indirizzo;
 
-    @OneToMany(mappedBy="customer")
+    @OneToMany(mappedBy="customer", cascade= CascadeType.ALL)
     private List<Device> deviceList;
 
 

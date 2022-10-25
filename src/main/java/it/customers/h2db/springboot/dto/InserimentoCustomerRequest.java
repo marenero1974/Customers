@@ -2,11 +2,12 @@ package it.customers.h2db.springboot.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.List;
 import java.util.Objects;
 
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2022-10-24T21:17:08.805186600+02:00[Europe/Rome]")
-public class InserimentoCustomerRequest   {
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2022-10-25T18:06:52.465048600+02:00[Europe/Rome]")
+public class InserimentoCustomerRequest {
   @JsonProperty("nome")
   private String nome;
 
@@ -18,6 +19,9 @@ public class InserimentoCustomerRequest   {
 
   @JsonProperty("indirizzo")
   private String indirizzo;
+
+  @JsonProperty("devices")
+  private List<DeviceDTO> devices = null;
 
   /**
    **/
@@ -87,6 +91,23 @@ public class InserimentoCustomerRequest   {
     this.indirizzo = indirizzo;
   }
 
+  /**
+   **/
+  public InserimentoCustomerRequest devices(List<DeviceDTO> devices) {
+    this.devices = devices;
+    return this;
+  }
+
+  
+  @ApiModelProperty(value = "")
+  @JsonProperty("devices")
+  public List<DeviceDTO> getDevices() {
+    return devices;
+  }
+  public void setDevices(List<DeviceDTO> devices) {
+    this.devices = devices;
+  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -100,12 +121,13 @@ public class InserimentoCustomerRequest   {
     return Objects.equals(nome, inserimentoCustomerRequest.nome) &&
         Objects.equals(cognome, inserimentoCustomerRequest.cognome) &&
         Objects.equals(codiceFiscale, inserimentoCustomerRequest.codiceFiscale) &&
-        Objects.equals(indirizzo, inserimentoCustomerRequest.indirizzo);
+        Objects.equals(indirizzo, inserimentoCustomerRequest.indirizzo) &&
+        Objects.equals(devices, inserimentoCustomerRequest.devices);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(nome, cognome, codiceFiscale, indirizzo);
+    return Objects.hash(nome, cognome, codiceFiscale, indirizzo, devices);
   }
 
   @Override
@@ -117,6 +139,7 @@ public class InserimentoCustomerRequest   {
     sb.append("    cognome: ").append(toIndentedString(cognome)).append("\n");
     sb.append("    codiceFiscale: ").append(toIndentedString(codiceFiscale)).append("\n");
     sb.append("    indirizzo: ").append(toIndentedString(indirizzo)).append("\n");
+    sb.append("    devices: ").append(toIndentedString(devices)).append("\n");
     sb.append("}");
     return sb.toString();
   }
