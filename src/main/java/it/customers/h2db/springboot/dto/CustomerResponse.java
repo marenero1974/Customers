@@ -6,7 +6,7 @@ import java.util.Objects;
 
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2022-10-25T17:53:25.928726700+02:00[Europe/Rome]")
-public class InserimentoCustomerResponse   {
+public class CustomerResponse {
   @JsonProperty("success")
   private Boolean success;
 
@@ -15,7 +15,7 @@ public class InserimentoCustomerResponse   {
 
   /**
    **/
-  public InserimentoCustomerResponse success(Boolean success) {
+  public CustomerResponse success(Boolean success) {
     this.success = success;
     return this;
   }
@@ -32,7 +32,7 @@ public class InserimentoCustomerResponse   {
 
   /**
    **/
-  public InserimentoCustomerResponse message(String message) {
+  public CustomerResponse message(String message) {
     this.message = message;
     return this;
   }
@@ -56,9 +56,9 @@ public class InserimentoCustomerResponse   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    InserimentoCustomerResponse inserimentoCustomerResponse = (InserimentoCustomerResponse) o;
-    return Objects.equals(success, inserimentoCustomerResponse.success) &&
-        Objects.equals(message, inserimentoCustomerResponse.message);
+    CustomerResponse customerResponse = (CustomerResponse) o;
+    return Objects.equals(success, customerResponse.success) &&
+        Objects.equals(message, customerResponse.message);
   }
 
   @Override
@@ -69,7 +69,7 @@ public class InserimentoCustomerResponse   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class InserimentoCustomerResponse {\n");
+    sb.append("class CustomerResponse {\n");
 
     sb.append("    success: ").append(toIndentedString(success)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");

@@ -22,7 +22,37 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InserimentoCustomerResponse'
+                $ref: '#/components/schemas/CustomerResponse'
+        '404':
+          description: "Data not found"
+        '500':
+          description: "Internal error"
+  /customer-care/modifica/customer/{codiceFiscale}:
+    patch:
+      tags:
+        - Private
+      summary: "Modifica dell' indirizzo del customer"
+      operationId: "modificaIndirizzoCustomer"
+      parameters:
+        - name: codiceFiscale
+          description: codice fiscale del customer
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: customerRequest
+          in: query
+          description: "Customer"
+          required: true
+          schema:
+            $ref: "#/definitions/CustomerRequest"
+      responses:
+        '200':
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
         '404':
           description: "Data not found"
         '500':
@@ -52,7 +82,7 @@ components:
             $ref: '#/components/schemas/DeviceDTO'
             #type: string
             #format: uuid
-    InserimentoCustomerResponse:
+    CustomerResponse:
       type: object
       required:
         - success
@@ -67,4 +97,9 @@ components:
         stato:
           type: string
         uuid:
+          type: string
+    CustomerRequest:
+      type: object
+      properties:
+        indirizzo:
           type: string

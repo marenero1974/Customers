@@ -23,6 +23,8 @@ public class Customer {
     private Long id;
     private String nome;
     private String cognome;
+
+    @Column(unique=true)
     private String codiceFiscale;
     private String indirizzo;
 
