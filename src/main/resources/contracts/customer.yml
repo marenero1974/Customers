@@ -57,6 +57,36 @@ paths:
           description: "Data not found"
         '500':
           description: "Internal error"
+  /customer-care/modifica/device/{uuid}:
+    patch:
+      tags:
+        - Private
+      summary: "Modifica lo stato del device"
+      operationId: "modificaStatoDevice"
+      parameters:
+        - name: uuid
+          description: uuid del device
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: deviceRequest
+          in: query
+          description: "Device"
+          required: true
+          schema:
+            $ref: "#/definitions/DeviceRequest"
+      responses:
+        '200':
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+        '404':
+          description: "Data not found"
+        '500':
+          description: "Internal error"
 
 components:
   schemas:
@@ -102,4 +132,9 @@ components:
       type: object
       properties:
         indirizzo:
+          type: string
+    DeviceRequest:
+      type: object
+      properties:
+        stato:
           type: string

@@ -33,6 +33,7 @@ public class Device {
   @Column(name = "id", nullable = false)
   private Long id;
 
+  @Column(unique = true)
   private UUID uuid;
 
   private String stato;
