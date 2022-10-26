@@ -20,7 +20,11 @@ public class DeviceDTO {
     return this;
   }
 
-  
+  public DeviceDTO(String stato, String uuid) {
+    this.stato = stato;
+    this.uuid = uuid;
+  }
+
   @ApiModelProperty(value = "")
   @JsonProperty("stato")
   public String getStato() {

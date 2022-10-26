@@ -1,5 +1,7 @@
 package it.customers.h2db.springboot.controller;
 
+import it.customers.h2db.springboot.dto.AllCustomerResponse;
+import it.customers.h2db.springboot.dto.CustomerDTO;
 import it.customers.h2db.springboot.dto.CustomerRequest;
 import it.customers.h2db.springboot.dto.CustomerResponse;
 import it.customers.h2db.springboot.dto.DeviceRequest;
@@ -9,6 +11,8 @@ import it.customers.h2db.springboot.models.Customer;
 import it.customers.h2db.springboot.models.Device;
 import it.customers.h2db.springboot.repositry.CustomerRepository;
 import it.customers.h2db.springboot.repositry.DeviceRepository;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +36,23 @@ public class CustomerCareApiController implements CustomerCareApi {
 
 
   @Override
+  public ResponseEntity<AllCustomerResponse> getAllCustomers() {
+    logger.info("Fetch di tutti gli utenti");
+    List<Customer> customers = new ArrayList<>();
+    try {
+      customerRepository.findAll().forEach(customers::add);
+    } catch (Exception e) {
+      return logAndBuildResponse("Impossibile ottenere la lista degli utenti", e, ResponseEntity.class);
+    }
+
+    AllCustomerResponse all = new AllCustomerResponse();
+    List<CustomerDTO> customerDTOS = CustomerMapper.mapToDto(customers);
+    all.setCustomers(customerDTOS);
+
+    return ResponseEntity.ok(all);
+  }
+
+  @Override
   public ResponseEntity<CustomerResponse> inserisciCustomer(InserimentoCustomerRequest input) {
     logger.info("Inserimento di un customer {}", input);
     Customer customer = CustomerMapper.mapToEntity(input);
@@ -47,7 +68,7 @@ public class CustomerCareApiController implements CustomerCareApi {
       customerRepository.save(customer);
       logger.info("Inserimento di un customer completato.");
     } catch (Exception e) {
-      return logAndBuildResponse("Errore durante il salvataggio del customer:", e);
+      return logAndBuildResponse("Errore durante il salvataggio del customer:", e, ResponseEntity.class);
     }
 
     CustomerResponse response = buildResponse(true,
@@ -69,7 +90,7 @@ public class CustomerCareApiController implements CustomerCareApi {
       customerRepository.save(customer);
     } catch (Exception e) {
       return logAndBuildResponse(
-          "Errore durante la modifica del customer tramite codice fiscale: ", e);
+          "Errore durante la modifica del customer tramite codice fiscale: ", e, ResponseEntity.class);
     }
     CustomerResponse response = buildResponse(true,
         "Indirizzo del customer modificato correttamente");
@@ -88,7 +109,7 @@ public class CustomerCareApiController implements CustomerCareApi {
       deviceRepository.save(device);
     } catch (Exception e) {
       return logAndBuildResponse(
-          "Errore durante la modifica dello stato del device tramite uuid: ", e);
+          "Errore durante la modifica dello stato del device tramite uuid: ", e, ResponseEntity.class);
     }
     CustomerResponse response = buildResponse(true,
         "Stato del device modificato correttamente");
@@ -103,13 +124,13 @@ public class CustomerCareApiController implements CustomerCareApi {
     return response;
   }
 
-  private static ResponseEntity<CustomerResponse> logAndBuildResponse(String str, Exception e) {
+  private static <T extends ResponseEntity> T logAndBuildResponse(String str, Exception e, Class<T> type) {
     StringBuilder errorMessage = new StringBuilder();
     errorMessage.append(str);
     errorMessage.append(e.getMessage());
     logger.error(errorMessage.toString());
     CustomerResponse response = buildResponse(false,
         errorMessage.toString());
-    return ResponseEntity.internalServerError().body(response);
+    return type.cast(ResponseEntity.internalServerError().body(response));
   }
 }

@@ -87,6 +87,23 @@ paths:
           description: "Data not found"
         '500':
           description: "Internal error"
+  /customer-care/customers:
+    get:
+      tags:
+        - Private
+      summary: "Restituisce tutti i customers presenti"
+      operationId: "getAllCustomers"
+      responses:
+        '200':
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllCustomerResponse'
+        '404':
+          description: "Data not found"
+        '500':
+          description: "Internal error"
 
 components:
   schemas:
@@ -110,8 +127,6 @@ components:
           type: "array"
           items:
             $ref: '#/components/schemas/DeviceDTO'
-            #type: string
-            #format: uuid
     CustomerResponse:
       type: object
       required:
@@ -138,3 +153,27 @@ components:
       properties:
         stato:
           type: string
+    AllCustomerResponse:
+      type: object
+      properties:
+        customers:
+          type: "array"
+          items:
+            $ref: '#/components/schemas/CustomerDTO'
+    CustomerDTO:
+      type: object
+      properties:
+        nome:
+          type: string
+        cognome:
+          type: string
+        codiceFiscale:
+          type: string
+        indirizzo:
+          type: string
+        devices:
+          type: "array"
+          items:
+            $ref: '#/components/schemas/DeviceDTO'
+
+
