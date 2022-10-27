@@ -12,6 +12,7 @@ import it.customers.h2db.springboot.models.Customer;
 import it.customers.h2db.springboot.models.Device;
 import it.customers.h2db.springboot.repositry.CustomerRepository;
 import it.customers.h2db.springboot.repositry.DeviceRepository;
+import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -36,6 +37,24 @@ public class CustomerCareApiController implements CustomerCareApi {
 
   private static Logger logger = LoggerFactory.getLogger(CustomerCareApiController.class);
 
+
+  @Override
+  @Transactional
+  public ResponseEntity<CustomerResponse> deleteDevice(String uuid) {
+    CustomerResponse customerResponse = new CustomerResponse();
+    try {
+      Integer success = deviceRepository.deleteDeviceByUuid(UUID.fromString(uuid));
+      if(success == 0) {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      } else {
+        customerResponse.setSuccess(true);
+        customerResponse.setMessage("Device cancellato correttamente");
+      }
+    } catch (Exception e) {
+      return logAndBuildResponse("Impossibile cancellare il device tramite uuid", e, ResponseEntity.class);
+    }
+    return ResponseEntity.ok(customerResponse);
+  }
 
   @Override
   public ResponseEntity<CustomerDTO> findCustomerByCodiceFiscale(String codiceFiscale) {

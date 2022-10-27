@@ -18,6 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface CustomerCareApi {
 
   @RequestMapping(
+      value = "/customer-care/delete/device/{uuid}",
+      produces = { "application/json" },
+      method = RequestMethod.DELETE
+  )
+  ResponseEntity<CustomerResponse> deleteDevice(@PathVariable("uuid") String uuid);
+
+  @RequestMapping(
       value = "/customer-care/customers/{codiceFiscale}",
       produces = { "application/json" },
       method = RequestMethod.GET
