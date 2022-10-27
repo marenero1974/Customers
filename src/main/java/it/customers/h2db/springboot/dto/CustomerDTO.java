@@ -23,6 +23,10 @@ public class CustomerDTO   {
   @JsonProperty("devices")
   private List<DeviceDTO> devices = null;
 
+  public CustomerDTO() {
+
+  }
+
   /**
    **/
   public CustomerDTO nome(String nome) {

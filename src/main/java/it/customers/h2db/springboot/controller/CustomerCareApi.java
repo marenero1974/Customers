@@ -1,6 +1,7 @@
 package it.customers.h2db.springboot.controller;
 
 import it.customers.h2db.springboot.dto.AllCustomerResponse;
+import it.customers.h2db.springboot.dto.CustomerDTO;
 import it.customers.h2db.springboot.dto.CustomerRequest;
 import it.customers.h2db.springboot.dto.CustomerResponse;
 import it.customers.h2db.springboot.dto.DeviceRequest;
@@ -14,6 +15,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public interface CustomerCareApi {
+
+  @RequestMapping(
+      value = "/customer-care/customers/{codiceFiscale}",
+      produces = { "application/json" },
+      method = RequestMethod.GET
+  )
+  ResponseEntity<CustomerDTO> findCustomerByCodiceFiscale(@PathVariable("codiceFiscale") String codiceFiscale);
 
   @RequestMapping(
       value = "/customer-care/customers",

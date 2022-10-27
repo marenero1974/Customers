@@ -29,7 +29,7 @@ public class CustomerMapper {
     return customer;
   }
 
-  public static List<CustomerDTO> mapToDto(List<Customer> customers) {
+  public static List<CustomerDTO> mapCustomersToDto(List<Customer> customers) {
     List<CustomerDTO> customerDTOS = new ArrayList<>();
     if(customers != null && customers.size() > 0) {
       customerDTOS = customers.stream()
@@ -45,5 +45,20 @@ public class CustomerMapper {
           .collect(Collectors.toList());
     }
     return customerDTOS;
+  }
+
+  public static CustomerDTO mapToDto(Customer customer) {
+    CustomerDTO customerDTO = new CustomerDTO();
+    if(customer!=null) {
+      customerDTO.setNome(customer.getNome());
+      customerDTO.setCognome(customer.getCognome());
+      customerDTO.setIndirizzo(customer.getIndirizzo());
+      customerDTO.setCodiceFiscale(customer.getCodiceFiscale());
+      List<DeviceDTO> deviceDTOS = customer.getDeviceList()
+          .stream().map(d -> new DeviceDTO(d.getStato(), d.getUuid().toString()))
+          .collect(Collectors.toList());
+      customerDTO.setDevices(deviceDTOS);
+    }
+    return customerDTO;
   }
 }

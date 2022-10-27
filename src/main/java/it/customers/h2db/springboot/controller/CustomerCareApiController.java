@@ -17,6 +17,8 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,17 +38,36 @@ public class CustomerCareApiController implements CustomerCareApi {
 
 
   @Override
+  public ResponseEntity<CustomerDTO> findCustomerByCodiceFiscale(String codiceFiscale) {
+    logger.info("findCustomerByCodiceFiscale  --- START ---- ");
+    Customer customer = null;
+    try {
+      customer = customerRepository.findByCodiceFiscale(codiceFiscale);
+      if(customer == null) {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+    } catch (Exception e) {
+      return logAndBuildResponse("Impossibile ottenere l'utente tramite il codice fiscale", e, ResponseEntity.class);
+    }
+
+    return ResponseEntity.ok(CustomerMapper.mapToDto(customer));
+  }
+
+  @Override
   public ResponseEntity<AllCustomerResponse> getAllCustomers() {
     logger.info("Fetch di tutti gli utenti");
     List<Customer> customers = new ArrayList<>();
     try {
       customerRepository.findAll().forEach(customers::add);
+      if(customers.size() == 0) {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
     } catch (Exception e) {
       return logAndBuildResponse("Impossibile ottenere la lista degli utenti", e, ResponseEntity.class);
     }
 
     AllCustomerResponse all = new AllCustomerResponse();
-    List<CustomerDTO> customerDTOS = CustomerMapper.mapToDto(customers);
+    List<CustomerDTO> customerDTOS = CustomerMapper.mapCustomersToDto(customers);
     all.setCustomers(customerDTOS);
 
     return ResponseEntity.ok(all);
@@ -58,9 +79,9 @@ public class CustomerCareApiController implements CustomerCareApi {
     Customer customer = CustomerMapper.mapToEntity(input);
 
     if (customer.getDeviceList().size() > 2) {
-      CustomerResponse response = buildResponse(false,
-          "Il numero di device per un utente non deve essere maggiore di 2");
-      logger.error("Il numero di device per un utente non deve essere maggiore di 2");
+      String errorMessage = "Il numero di device per un utente non deve essere maggiore di 2";
+      CustomerResponse response = buildResponse(false, errorMessage);
+      logger.error(errorMessage);
       return ResponseEntity.internalServerError().body(response);
     }
 
@@ -86,6 +107,9 @@ public class CustomerCareApiController implements CustomerCareApi {
 
     try {
       Customer customer = customerRepository.findByCodiceFiscale(codiceFiscale);
+      if(customer == null) {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
       customer.setIndirizzo(customerRequest.getIndirizzo());
       customerRepository.save(customer);
     } catch (Exception e) {

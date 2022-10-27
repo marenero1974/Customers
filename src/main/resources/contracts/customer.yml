@@ -104,6 +104,30 @@ paths:
           description: "Data not found"
         '500':
           description: "Internal error"
+  /customer-care/customers/{codiceFiscale}:
+    get:
+      tags:
+        - Private
+      summary: "Restituisce tutti i customers presenti"
+      operationId: "findCustomerByCodiceFiscale"
+      parameters:
+        - name: codiceFiscale
+          description: codice fiscale del customer
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerDTO'
+        '404':
+          description: "Data not found"
+        '500':
+          description: "Internal error"
 
 components:
   schemas:
@@ -175,5 +199,6 @@ components:
           type: "array"
           items:
             $ref: '#/components/schemas/DeviceDTO'
+
 
 
