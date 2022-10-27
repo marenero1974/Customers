@@ -6,6 +6,7 @@ import it.customers.h2db.springboot.dto.CustomerRequest;
 import it.customers.h2db.springboot.dto.CustomerResponse;
 import it.customers.h2db.springboot.dto.DeviceRequest;
 import it.customers.h2db.springboot.dto.InserimentoCustomerRequest;
+import it.customers.h2db.springboot.dto.IsDevicePresent;
 import javax.validation.constraints.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,13 @@ public interface CustomerCareApi {
       method = RequestMethod.GET
   )
   ResponseEntity<AllCustomerResponse> getAllCustomers();
+
+  @RequestMapping(
+      value = "/customer-care/device/{uuid}",
+      produces = { "application/json" },
+      method = RequestMethod.GET
+  )
+  ResponseEntity<IsDevicePresent> isDevicePresent(@PathVariable("uuid") String uuid);
   @RequestMapping(
       value = "/customer-care/customer",
       consumes = { "application/json" },

@@ -128,6 +128,30 @@ paths:
           description: "Data not found"
         '500':
           description: "Internal error"
+  /customer-care/device/{uuid}:
+    get:
+      tags:
+        - Private
+      summary: "Restituisce se un device è presente"
+      operationId: "isDevicePresent"
+      parameters:
+        - name: uuid
+          description: uuid del device
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IsDevicePresent'
+        '404':
+          description: "Data not found"
+        '500':
+          description: "Internal error"
 
 components:
   schemas:
@@ -199,6 +223,11 @@ components:
           type: "array"
           items:
             $ref: '#/components/schemas/DeviceDTO'
+    IsDevicePresent:
+      type: object
+      properties:
+        isPresent:
+          type: boolean
 
 
 

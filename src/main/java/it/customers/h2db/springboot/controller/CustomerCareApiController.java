@@ -6,6 +6,7 @@ import it.customers.h2db.springboot.dto.CustomerRequest;
 import it.customers.h2db.springboot.dto.CustomerResponse;
 import it.customers.h2db.springboot.dto.DeviceRequest;
 import it.customers.h2db.springboot.dto.InserimentoCustomerRequest;
+import it.customers.h2db.springboot.dto.IsDevicePresent;
 import it.customers.h2db.springboot.mapper.CustomerMapper;
 import it.customers.h2db.springboot.models.Customer;
 import it.customers.h2db.springboot.models.Device;
@@ -18,7 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -71,6 +71,22 @@ public class CustomerCareApiController implements CustomerCareApi {
     all.setCustomers(customerDTOS);
 
     return ResponseEntity.ok(all);
+  }
+
+  @Override
+  public ResponseEntity<IsDevicePresent> isDevicePresent(String uuid) {
+    IsDevicePresent isDevicePresent = new IsDevicePresent();
+    try {
+      Device device = deviceRepository.findDeviceByUuid(UUID.fromString(uuid));
+      if(device == null) {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      } else {
+        isDevicePresent.setIsPresent(true);
+      }
+    } catch (Exception e) {
+      return logAndBuildResponse("Impossibile ottenere il device tramite uuid fornito", e, ResponseEntity.class);
+    }
+    return ResponseEntity.ok(isDevicePresent);
   }
 
   @Override
