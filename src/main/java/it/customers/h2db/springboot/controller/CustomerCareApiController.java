@@ -164,6 +164,9 @@ public class CustomerCareApiController implements CustomerCareApi {
         uuid, deviceRequest.getStato());
     try {
       Device device = deviceRepository.findDeviceByUuid(UUID.fromString(uuid));
+      if(device == null) {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
       device.setStato(deviceRequest.getStato());
       deviceRepository.save(device);
     } catch (Exception e) {
@@ -183,7 +186,7 @@ public class CustomerCareApiController implements CustomerCareApi {
     return response;
   }
 
-  private static <T extends ResponseEntity> T logAndBuildResponse(String str, Exception e, Class<T> type) {
+  private <T extends ResponseEntity> T logAndBuildResponse(String str, Exception e, Class<T> type) {
     StringBuilder errorMessage = new StringBuilder();
     errorMessage.append(str);
     errorMessage.append(e.getMessage());
